@@ -11,9 +11,9 @@ package com.google.re2j;
  * MachineInput abstracts different representations of the input text
  * supplied to the Machine.  It provides one-character lookahead.
  */
-abstract class MachineInput {
+public abstract class MachineInput {
 
-  static final int EOF = (-1 << 3) | 0;
+  public static final int EOF = (-1 << 3) | 0;
 
   static MachineInput fromUTF8(byte[] b) {
     return new UTF8Input(b);
@@ -39,20 +39,20 @@ abstract class MachineInput {
   // the lower 3 bits, and the rune (Unicode code point) in the high
   // bits.  Never negative, except for EOF which is represented as -1
   // << 3 | 0.
-  abstract int step(int pos);
+  public abstract int step(int pos);
 
   // can we look ahead without losing info?
-  abstract boolean canCheckPrefix();
+  public abstract boolean canCheckPrefix();
 
   // Returns the index relative to |pos| at which |re2.prefix| is found
   // in this input stream, or a negative value if not found.
-  abstract int index(RE2 re2, int pos);
+  public abstract int index(RE2 re2, int pos);
 
   // Returns a bitmask of EMPTY_* flags.
-  abstract int context(int pos);
+  public abstract int context(int pos);
 
   // Returns the end position in the same units as step().
-  abstract int endPos();
+  public abstract int endPos();
 
   //// Implementations
 
@@ -81,7 +81,7 @@ abstract class MachineInput {
     }
 
     @Override
-    int step(int i) {
+    public int step(int i) {
       i += start;
       if (i >= end) {
         return EOF;
@@ -125,19 +125,19 @@ abstract class MachineInput {
     }
 
     @Override
-    boolean canCheckPrefix() {
+    public boolean canCheckPrefix() {
       return true;
     }
 
     @Override
-    int index(RE2 re2, int pos) {
+    public int index(RE2 re2, int pos) {
       pos += start;
       int i = Utils.indexOf(b, re2.prefixUTF8, pos);
       return i < 0 ? i : i - pos;
     }
 
     @Override
-    int context(int pos) {
+    public int context(int pos) {
       pos += this.start;
       int r1 = -1;
       if (pos > this.start && pos <= this.end) {
@@ -165,7 +165,7 @@ abstract class MachineInput {
     }
 
     @Override
-    int endPos() { return end; }
+    public int endPos() { return end; }
   }
 
   // |pos| and |width| are in Java "char" units.
@@ -181,7 +181,7 @@ abstract class MachineInput {
     }
 
     @Override
-    int step(int pos) {
+    public int step(int pos) {
       pos += start;
       if (pos < end) {
         int rune = Character.codePointAt(str, pos);
@@ -194,19 +194,19 @@ abstract class MachineInput {
     }
 
     @Override
-    boolean canCheckPrefix() {
+    public boolean canCheckPrefix() {
       return true;
     }
 
     @Override
-    int index(RE2 re2, int pos) {
+    public int index(RE2 re2, int pos) {
       pos += start;
       int i = indexOf(str, re2.prefix, pos);
       return i < 0 ? i : i - pos;
     }
 
     @Override
-    int context(int pos) {
+    public int context(int pos) {
       pos += start;
       int r1 = pos > start && pos <= end
           ? Character.codePointBefore(str, pos)
@@ -218,7 +218,7 @@ abstract class MachineInput {
     }
 
     @Override
-    int endPos() { return end; }
+    public int endPos() { return end; }
 
     private int indexOf(CharSequence hayStack, String needle, int pos) {
       if (hayStack instanceof String) {

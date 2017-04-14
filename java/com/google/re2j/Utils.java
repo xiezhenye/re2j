@@ -7,17 +7,17 @@ package com.google.re2j;
 /**
  * Various constants and helper utilities.
  */
-abstract class Utils {
+public abstract class Utils {
 
-  static final int[] EMPTY_INTS = {};
+  public static final int[] EMPTY_INTS = {};
 
   // Returns true iff |c| is an ASCII letter or decimal digit.
-  static boolean isalnum(int c) {
+  public static boolean isalnum(int c) {
     return '0' <= c && c <= '9' || 'A' <= c && c <= 'Z' || 'a' <= c && c <= 'z';
   }
 
   // If |c| is an ASCII hex digit, returns its value, otherwise -1.
-  static int unhex(int c) {
+  public static int unhex(int c) {
     if ('0' <= c && c <= '9') {
       return c - '0';
     }
@@ -34,7 +34,7 @@ abstract class Utils {
 
   // Appends a RE2 literal to |out| for rune |rune|,
   // with regexp metacharacters escaped.
-  static void escapeRune(StringBuilder out, int rune) {
+  public static void escapeRune(StringBuilder out, int rune) {
     if (Unicode.isPrint(rune)) {
       if (METACHARACTERS.indexOf((char) rune) >= 0) {
         out.append('\\');
@@ -68,7 +68,7 @@ abstract class Utils {
   }
 
   // Returns the array of runes in the specified Java UTF-16 string.
-  static int[] stringToRunes(String str) {
+  public static int[] stringToRunes(String str) {
     int charlen = str.length();
     int runelen = str.codePointCount(0, charlen);
     int[] runes = new int[runelen];
@@ -82,7 +82,7 @@ abstract class Utils {
   }
 
   // Returns the Java UTF-16 string containing the single rune |r|.
-  static String runeToString(int r) {
+  public static String runeToString(int r) {
     char c = (char) r;
     return r == c
         ? String.valueOf(c)
@@ -90,7 +90,7 @@ abstract class Utils {
   }
 
   // Returns a new copy of the specified subarray.
-  static int[] subarray(int[] array, int start, int end) {
+  public static int[] subarray(int[] array, int start, int end) {
     int[] r = new int[end - start];
     for (int i = start; i < end; ++i) {
       r[i - start] = array[i];
@@ -99,7 +99,7 @@ abstract class Utils {
   }
 
   // Returns a new copy of the specified subarray.
-  static byte[] subarray(byte[] array, int start, int end) {
+  public static byte[] subarray(byte[] array, int start, int end) {
     byte[] r = new byte[end - start];
     for (int i = start; i < end; ++i) {
       r[i - start] = array[i];
@@ -109,7 +109,7 @@ abstract class Utils {
 
   // Returns the index of the first occurrence of array |target| within
   // array |source| after |fromIndex|, or -1 if not found.
-  static int indexOf(byte[] source, byte[] target, int fromIndex) {
+  public static int indexOf(byte[] source, byte[] target, int fromIndex) {
     if (fromIndex >= source.length) {
       return target.length == 0 ? source.length : -1;
     }
@@ -145,7 +145,7 @@ abstract class Utils {
   // isWordRune reports whether r is consider a ``word character''
   // during the evaluation of the \b and \B zero-width assertions.
   // These assertions are ASCII-only: the word characters are [A-Za-z0-9_].
-  static boolean isWordRune(int r)  {
+  public static boolean isWordRune(int r)  {
     return ('A' <= r && r <= 'Z' ||
             'a' <= r && r <= 'z' ||
             '0' <= r && r <= '9' ||
@@ -154,13 +154,13 @@ abstract class Utils {
 
   //// EMPTY_* flags
 
-  static final int EMPTY_BEGIN_LINE       = 0x01;
-  static final int EMPTY_END_LINE         = 0x02;
-  static final int EMPTY_BEGIN_TEXT       = 0x04;
-  static final int EMPTY_END_TEXT         = 0x08;
-  static final int EMPTY_WORD_BOUNDARY    = 0x10;
-  static final int EMPTY_NO_WORD_BOUNDARY = 0x20;
-  static final int EMPTY_ALL              = -1;  // (impossible)
+  public static final int EMPTY_BEGIN_LINE       = 0x01;
+  public static final int EMPTY_END_LINE         = 0x02;
+  public static final int EMPTY_BEGIN_TEXT       = 0x04;
+  public static final int EMPTY_END_TEXT         = 0x08;
+  public static final int EMPTY_WORD_BOUNDARY    = 0x10;
+  public static final int EMPTY_NO_WORD_BOUNDARY = 0x20;
+  public static final int EMPTY_ALL              = -1;  // (impossible)
 
   // emptyOpContext returns the zero-width assertions satisfied at the position
   // between the runes r1 and r2, a bitmask of EMPTY_* flags.
@@ -168,7 +168,7 @@ abstract class Utils {
   // text.
   // Passing r2 == -1 indicates that the position is at the end of the text.
   // TODO(adonovan): move to Machine.
-  static int emptyOpContext(int r1, int r2) {
+  public static int emptyOpContext(int r1, int r2) {
     int op = 0;
     if (r1 < 0) {
       op |= EMPTY_BEGIN_TEXT | EMPTY_BEGIN_LINE;

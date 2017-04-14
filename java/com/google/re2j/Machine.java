@@ -15,7 +15,7 @@ import java.util.List;
 // RE2 instance using a simple NFA.
 //
 // Called by RE2.doExecute.
-class Machine {
+public class Machine {
 
   // A logical thread in the NFA.
   private static class Thread {
@@ -116,7 +116,7 @@ class Machine {
   /**
    * Constructs a matching Machine for the specified {@code RE2}.
    */
-  Machine(RE2 re2) {
+  public Machine(RE2 re2) {
     this.prog = re2.prog;
     this.re2 = re2;
     this.q0 = new Queue(prog.numInst());
@@ -125,20 +125,24 @@ class Machine {
   }
 
   // init() reinitializes an existing Machine for re-use on a new input.
-  void init(int ncap) {
+  public void init(int ncap) {
     for (Thread t : pool) {
       t.cap = new int[ncap];
     }
     this.matchcap = new int[ncap];
   }
 
-  int[] submatches() {
+  public int[] submatches() {
     if (matchcap.length == 0) {
       return Utils.EMPTY_INTS;
     }
     int[] cap = new int[matchcap.length];
     System.arraycopy(matchcap, 0, cap, 0, matchcap.length);
     return cap;
+  }
+
+  public int[] refSubMatches() {
+    return matchcap;
   }
 
   // alloc() allocates a new thread with the given instruction.
@@ -161,7 +165,7 @@ class Machine {
   // RE2 Anchor |anchor|.
   // It reports whether a match was found.
   // If so, matchcap holds the submatch information.
-  boolean match(MachineInput in, int pos, int anchor) {
+  public boolean match(MachineInput in, int pos, int anchor) {
     int startCond = re2.cond;
     if (startCond == Utils.EMPTY_ALL) {  // impossible
       return false;
