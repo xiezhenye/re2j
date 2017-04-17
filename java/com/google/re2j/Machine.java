@@ -145,6 +145,10 @@ public class Machine {
     return matchcap;
   }
 
+  public int capCount() {
+    return matchcap.length / 2;
+  }
+
   // alloc() allocates a new thread with the given instruction.
   // It uses the free pool if possible.
   private Thread alloc(Inst inst) {
